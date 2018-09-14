@@ -1,0 +1,31 @@
+{
+  "name": "template",
+  "version": "0.0.1",
+  "main": "app.js",
+  "dependencies": {
+    "jquery": "latest",
+    "koa": "latest",
+    "koa-route": "latest",
+    "koa-static": "latest",
+    "koa-views": "latest",
+    "pug": "^2.0.3"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-sass": "^3.2.1",
+    "jest": "^23.6.0",
+    "merge-stream": "^1.0.1"
+  },
+  "engines": {
+    "node": ">= 10.x"
+  },
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "start": "node app.js",
+    "postinstall": "gulp build"
+  },
+  "description": "Template for random projects",
+  "author": "pixilz",
+  "license": "MIT"
+}

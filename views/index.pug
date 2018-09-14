@@ -1,5 +1,47 @@
 doctype html
 html(lang='en')
   head
+    style.
+      .field, input[type=submit] {
+        margin-top: 20px;
+        display: block;
+      }
+
+      input + input {
+        margin-left: 15px;
+      }
+
+      label > :first-child:not(br) {
+        margin-left: 10px;
+      }
+
+      *:invalid {
+        border: 2px solid pink;
+      }
   body
-    p _template test
+    h1 Zo Form
+    form.zo-form
+      .field
+        label Input 1
+          input(name='input1' required)
+      .field
+        label Input 2 (email)
+          input(name='input2' type='email')
+      .field
+        label Input 3 & 4 (tel)
+          br
+          input(name='input3' type='tel')
+          input(name='input4' type='tel')
+      .field
+        label Textarea
+          br
+          textarea(name='textarea')
+      .field
+        label Select
+          select(name='select' required)
+            option(disabled selected) disabled
+            option Yolo
+            option oloY
+      input(type='submit')
+      script(src='/scripts/build/jquery.min.js')
+      script(src='/scripts/zoValidator.js')

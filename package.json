@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "zo-form-validator",
   "version": "0.0.1",
   "main": "app.js",
   "dependencies": {
@@ -25,7 +25,7 @@
     "start": "node app.js",
     "postinstall": "gulp build"
   },
-  "description": "Template for random projects",
+  "description": "A simple form validator that will display errors to the user.",
   "author": "pixilz",
   "license": "MIT"
 }

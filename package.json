@@ -8,7 +8,8 @@
     "koa-route": "latest",
     "koa-static": "latest",
     "koa-views": "latest",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "validate": "github:cferdinandi/validate#master"
   },
   "devDependencies": {
     "gulp": "^4.0.0",

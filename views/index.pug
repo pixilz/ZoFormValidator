@@ -28,9 +28,9 @@ html(lang='en')
         label Input 2 (email)
           input(name='input2' type='email')
       .field
-        label Input 3 & 4 (tel)
+        label Input 3 (Minlength 4) & 4 (tel)
           br
-          input(name='input3' type='tel')
+          input(name='input3' type='tel' minlength="4")
           input(name='input4' type='tel')
       .field
         label Textarea
@@ -43,5 +43,6 @@ html(lang='en')
             option Yolo
             option oloY
       input(type='submit')
-      script(src='/scripts/build/jquery.min.js')
+      script(src=`/scripts/build/jquery${!config["source-maps"] ? ".min" : ""}.js`)
+      script(src=`/scripts/build/validityState-polyfill${!config["source-maps"] ? ".min" : ""}.js`)
       script(src='/scripts/zoValidator.js')

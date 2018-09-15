@@ -16,10 +16,58 @@
 
   var exports = {},
     EVENT_NAMESPACE = '.zo-validator',
-    FORM_SELECTOR = 'form.zo-form',
+    FORM_SELECTOR = 'form[data-zo-validator]',
     ERROR_TEXT_CLASS = 'zo-validator-user-error',
     ERROR_ATTRIBUTE = 'data-is-invalid',
-    ANIMATION_CLASS = 'zo-validator-animating';
+    ANIMATION_CLASS = 'zo-validator-animating',
+    ANIMATION_CSS = {
+      'marginTop': '0',
+      'marginBottom': '0',
+      'paddingTop': '0',
+      'paddingBottom': '0',
+      'overflow-y': 'hidden'
+    };
+
+  // webshims.validityMessages.en = {
+  //   "typeMismatch": {
+  //     "defaultMessage": "Please enter a valid value.",
+  //     "email": "Please enter an email address.",
+  //     "url": "Please enter a URL."
+  //   },
+  //   "badInput": {
+  //     "defaultMessage": "Please enter a valid value.",
+  //     "number": "Please enter a number.",
+  //     "date": "Please enter a date.",
+  //     "time": "Please enter a time.",
+  //     "range": "Invalid input.",
+  //     "month": "Please enter a valid value.",
+  //     "datetime-local": "Please enter a datetime."
+  //   },
+  //   "rangeUnderflow": {
+  //     "defaultMessage": "Value must be greater than or equal to {%min}.",
+  //     "date": "Value must be at or after {%min}.",
+  //     "time": "Value must be at or after {%min}.",
+  //     "datetime-local": "Value must be at or after {%min}.",
+  //     "month": "Value must be at or after {%min}."
+  //   },
+  //   "rangeOverflow": {
+  //     "defaultMessage": "Value must be less than or equal to {%max}.",
+  //     "date": "Value must be at or before {%max}.",
+  //     "time": "Value must be at or before {%max}.",
+  //     "datetime-local": "Value must be at or before {%max}.",
+  //     "month": "Value must be at or before {%max}."
+  //   },
+  //   "stepMismatch": "Invalid input.",
+  //   "tooLong": "Please enter at most {%maxlength} character(s). You entered {%valueLen}.",
+  //   "tooShort": "Please enter at least {%minlength} character(s). You entered {%valueLen}.",
+  //   "patternMismatch": "Invalid input. {%title}",
+  //   "valueMissing": {
+  //     "defaultMessage": "Please fill out this field.",
+  //     "checkbox": "Please check this box if you want to proceed.",
+  //     "select": "Please select an option.",
+  //     "radio": "Please select an option."
+  //   }
+  // };
 
   var validityChangeEvents = ['blur change'],
     errorAnimationDuration = 150;
@@ -56,38 +104,33 @@
     }
 
     $error.stop(true, true);
+
+    if ($error.is(':visible')) {
+      return;
+    }
+
     $error.addClass(fnAnimationClass);
 
     $error.css('display', '');
 
     height = $error.outerHeight(true);
 
-    $error.css({
-      'marginTop': '0',
-      'marginBottom': '0',
-      'paddingTop': '0',
-      'paddingBottom': '0',
-      'height': 1,
-      'overflow-y': 'hidden'
-    });
-
-    $error.animate({
-      'height': height
-    }, {
-      'duration': errorAnimationDuration,
-      'easing': 'linear',
-      'complete': function() {
-        $error.removeClass(fnAnimationClass);
-        $error.css({
-          'marginTop': '',
-          'marginBottom': '',
-          'paddingTop': '',
-          'paddingBottom': '',
-          'height': '',
-          'overflow-y': ''
-        });
-      }
-    });
+    $error
+      .css(
+        $.extend({
+        'height': 1
+        }, ANIMATION_CSS)
+      )
+      .animate({
+        'height': height
+      }, {
+        'duration': errorAnimationDuration,
+        'easing': 'linear',
+        'complete': function() {
+          $error.removeClass(fnAnimationClass);
+          $error.removeAttr('style');
+        }
+      });
   };
 
   var hideError = function(errorEl, callback) {
@@ -103,14 +146,11 @@
     $error.addClass(fnAnimationClass);
 
     $error
-      .css({
-        'marginTop': '0',
-        'marginBottom': '0',
-        'paddingTop': '0',
-        'paddingBottom': '0',
-        'height': height,
-        'overflow-y': 'hidden'
-      })
+      .css(
+        $.extend({
+          'height': height
+        }, ANIMATION_CSS)
+      )
       .animate({
         'height': 1
       }, {
@@ -119,15 +159,8 @@
         'complete': function() {
           $error.removeClass(fnAnimationClass);
 
-          $error.css({
-            'marginTop': '',
-            'marginBottom': '',
-            'paddingTop': '',
-            'paddingBottom': '',
-            'height': '',
-            'overflow-y': '',
-            'display': 'none'
-          });
+          $error.removeAttr('style');
+          $error.css('display', 'none');
 
           callback();
         }
@@ -144,6 +177,7 @@
       $error = $errors;
 
     if (!isValid) {
+      console.dir(this);
       if (!$errors.length) {
         $error = createErrorEl('There is an error.');
 
@@ -192,20 +226,20 @@
   };
 
   exports.validate = function(form) {
-    var FN_EVENT_NAMESPACE = '.' + EVENT_NAMESPACE + '-validate-fn';
+    // var FN_EVENT_NAMESPACE = '.' + EVENT_NAMESPACE + '-validate-fn';
 
     var $form = getForm(form),
-      valid = true;
+      valid = $form.checkValidity();
 
-    $form.one('invalid' + EVENT_NAMESPACE + FN_EVENT_NAMESPACE, function() {
-      valid = false;
-    });
+    // $form.one('invalid' + EVENT_NAMESPACE + FN_EVENT_NAMESPACE, function() {
+    //   valid = false;
+    // });
 
-    $form.find(':input').each(function() {
-      this.checkValidity();
-    });
+    // $form.find(':input').each(function() {
+    //   this.checkValidity();
+    // });
 
-    $form.off('invalid' + EVENT_NAMESPACE + FN_EVENT_NAMESPACE);
+    // $form.off('invalid' + EVENT_NAMESPACE + FN_EVENT_NAMESPACE);
 
     return valid ? exports.getFormValues($form) : false;
   };

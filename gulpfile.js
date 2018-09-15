@@ -6,7 +6,10 @@ let sassInput = 'src/scss/**/*.scss',
   cssOutput = './public/css/build/',
   buildOutput = './public/scripts/build/',
   publicNodeModules = [
-    'jquery/dist/jquery.min.js'
+    'jquery/dist/jquery.min.js',
+    'jquery/dist/jquery.js',
+    'validate/static/js/validityState-polyfill.min.js',
+    'validate/static/js/validityState-polyfill.js'
   ];
 
 gulp.task('styles', () =>

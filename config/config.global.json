@@ -1,0 +1,6 @@
+{
+  "type": "global",
+  "port": 3000,
+  "source-maps": true,
+  "log-connections": true
+}
